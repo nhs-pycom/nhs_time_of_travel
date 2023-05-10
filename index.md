@@ -11,12 +11,12 @@ mapping tool to support decision-making in health and social care. This work was
 and [Paul Carroll](https://github.com/pauliecarroll).
 
 The work that follows can be seen and downloaded from this repository [GitHub repository](https://github.com/nhs-pycom/nhs_time_of_travel). This is the current piece of work to which the 
-following page refers to. Please raise any issues with the code using the issues part of the github repository. 
+following page refers to. Please raise any issues with the code using the issues part of the github repository or contact me directly, paul.carroll9@nhs.net. 
 
 
 ### Use-cases 
 
-Following a presentation at NHS-Pycom on the aforementioned Geospatial work, several different areas of the NHS got in touch, and they identified where there are current gaps and needs, 
+Following a presentation at NHS-Pycom on the aforementioned Geospatial work, several different areas of the NHS contacted me, and they identified where there are current gaps and needs, 
 or use-cases for which a geospatial tool, built specifically for purpose, could help solve the issues they faced. The use-cases they faced were numerous:
 
 - Ambulance drop-offs/ Patient transport
@@ -33,10 +33,8 @@ or use-cases for which a geospatial tool, built specifically for purpose, could 
 
 The more we spoke to different areas of the NHS the more this need became apparent. What also became apparent was the cost of some of these services. Numerous trusts are paying commercial 
 operators for these services. Sometimes these were the only operators out there, as there was nothing publicly available or free. 
-But for other services the second need was the need for patient and staff data to remain confidential, and remain within the trust. Within the NHS data protection is paramount, so taking 
-this account, we wanted to build a tool that could be brought to the data. Using open-source software and publicly accessible datasets we calculate the travel time, we wanted to show 
-what is possible and bring to the different areas of the NHS for them to adapt to their specific needs. Two publicly available datasets we have used are from NHS Digital. The main software
-we used is Python 3.8+, although the latest run of this code uses Python 3.10 and to avoid dependency issues, I would suggest following the README's pipenv and requirements.txt instructions. The app functionality is Streamlit, with several Geospatial libraries within Python.
+But for other services the second need was the need for patient/ staff data to remain confidential, and remain within the trust. Within the NHS data protection is paramount, so taking 
+this account, we wanted to build a tool that could be brought to the data. Using open-source software and publicly accessible datasets we wanted to show what is possible and ideally provide this repo as a source for different areas of the NHS to adapt to their own specific needs. There are two publicly available datasets we have used, and these are from NHS Digital. The main software we used is Python 3.10+. The app functionality is Streamlit, with several Geospatial libraries within Python.
 This app can be spun up on anyone's laptop, and the data would never need to leave that machine. 
 
 Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data).
@@ -70,17 +68,15 @@ nodes (or vertices) and are visualised as points. The connections between nodes 
 and preserve one-way directionality. 
 
 Layering the OSMNX and NetworkX nodes and edges onto a Folium map, and using the ox.distance.nearest_nodes and nx.shortest_path functions, we were able to produce a calculation of the 
-shortest route around the network. The algorithm we've written does this first for a permutations function, and then for a tsp_greedy function. This is a function where the first address 
-to second address is the shortest distance, and then the third address is selected from the next shortest distances available from the remaining addresses not yet visited. 
+shortest route around the network. The algorithm we've written does this first for a permutations function, and then for a tsp_greedy function.  
 From testing, having the initial permutations distance calculation compare with the tsp_greedy calculation, returned a far more superior output to the route displayed on the folium map. 
-This also gave an update you could see visibly you would drive, or walk. 
 
 The functions are wrapped in the streamlit code, and when the code to run the app is called 'streamlit run streamlit_app.py', this is the page that you'll see when you click on the Route
 Optimizer. On the left of the page you have the index, with 'Route Optimizer' highlighted here. The 'hospital.csv' dataset from the data folder is pre-loaded. When you select a town/ City or County from the box, the dataframe will filter to show you all hospitals in the dataset within that area. If you wish to enter a different start address, for example your starting 
 address, or a train station, please enter that in the box titled 'Enter a new start address'. When you click on submit, this address will appear in the 'Select start address' field. 
 The 'select start address' field is a dropdown box of the filtered dataframe above. 
 On the left of the screen just beneath the page index, is a browse files button. This is where you can upload your own data. There is an address_templates.xls file in the templates folder. 
-Please use the format in this, 'Name, Address, City, County, Postcode' so the code will pick up your data and geocode it correctly.
+Please use the format in this, 'Name, Address' so the code will pick up your data and geocode it correctly.
 
 <p align="centre">
   <img src="images/png/tsp1.png" width="1300" height="660">
@@ -98,6 +94,18 @@ Once you hit the submit button the algorithm goes to work, and maybe 20-30 secon
 Please note with the way this algorithm works. This will work well with up to 10, maybe even 12 addresses. But that will depend on the computational power you have available, and it will be slower the higher the number of addresses. Streamlit is set up in our code to cache the Api calls that return a networkx map of a region. So the first you run this on Cornwall, it may
 take a while. But the second time and onward, the code will look at the cache first, and call the same json file that was produced for the area if it's there and hasn't been deleted. 
 Your data is not cached, only the Nominatim api region calls. 
+
+
+### Multiple Shortest Route
+
+This is a functionality that was brought by a couple of areas in the NHS. One use case here is suggesting different modes of transport for the shortest route to work for staff, and a future use case could incorporate bus routes, and bus timetables, or public transport routes and timetables. Whilst this function works in a different way from the route optimiser, the premis is the same. The user can again either upload or use the existing datasets in the data folder. Enter a target address, select the network type, press submit and the algorithm will run. 
+
+
+### Max Coverage Location 
+
+This is the site scoring page. 
+
+
 
 ## Citations
 
