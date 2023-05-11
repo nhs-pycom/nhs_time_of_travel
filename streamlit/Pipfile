@@ -68,7 +68,6 @@ matplotlib-inline = "==0.1.6"
 munch = "==2.5.0"
 nest-asyncio = "==1.5.6"
 networkx = "==2.8.8"
-nhstravel = {editable = true, ref = "c73ed01db70dfaa819ec51bfa1e8ff1365e668b9", git = "https://github.com/nhs-pycom/nhs_time_of_travel.git"}
 numpy = "==1.23.5"
 openpyxl = "==3.1.2"
 osmnx = "==1.2.2"
@@ -135,6 +134,7 @@ webencodings = "==0.5.1"
 werkzeug = "==2.2.3"
 xlrd = "==2.0.1"
 zipp = "==3.11.0"
+nhstravel = {editable = true, ref = "c73ed01db70dfaa819ec51bfa1e8ff1365e668b9", git = "https://github.com/nhs-pycom/nhs_time_of_travel.git"}
 
 [dev-packages]
 ipykernel = "*"
