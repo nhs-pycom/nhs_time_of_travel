@@ -1,7 +1,8 @@
 import requests
 from collections import defaultdict
 from geopy.geocoders import Nominatim
-geolocator = Nominatim(user_agent='my_app')
+
+geolocator = Nominatim(user_agent="my_app")
 import pandas as pd
 import numpy as np
 import warnings
@@ -26,90 +27,118 @@ import math
 class GeocodingError(Exception):
     pass
 
-def main(address,radius_miles,speed):
 
-    if address.strip()=='':
-        raise GeocodingError('No address entered, please enter an address')
-    
-    geolocator = Nominatim(user_agent='my_application')
-    location = Nominatim(user_agent='my_app').geocode(address, addressdetails=True)
-    if 'city' in location.raw['address']:
-        town_city = location.raw['address']['city']
-    elif 'town' in location.raw['address']:
-        town_city = location.raw['address']['town']
-    else:
-        town_city = None
+def main(address, radius_miles, speed):
+    if address.strip() == "":
+        raise GeocodingError("No address entered, please enter an address")
 
+    #geolocator = Nominatim(user_agent="my_application")
+    location = Nominatim(user_agent="my_app").geocode(address, addressdetails=True)
 
+    x = 1.25
 
-    radius_metres = radius_miles*1609
+    radius_metres = (radius_miles * x) * 1609
 
     if location is None:
-        raise GeocodingError('Address could not be found, please check the example format {}'.format(address))
+        raise GeocodingError(
+            "Address could not be found, please check the example format {}".format(
+                address
+            )
+        )
 
+   
     origin = (location.latitude, location.longitude)
-    G = ox.graph_from_point(origin, dist=radius_metres, network_type='drive')
-    #G = ox.add_edge_speeds(G,speed)
-    #G = ox.add_edge_travel_times(G)
 
 
-    lsoa_data = pd.read_csv('../data/lsoa_global_number_residents_2021.csv')
-    lsoa_postcode = pd.read_csv('../data/pcd_lsoa21cd_nov22_en.csv')
-    lsoa_pop = pd.read_csv('../data/lsoa_global_number_residents_2021.csv')
-    gdf = gpd.read_file('../data/LSOA_2021_EW_BGC.shp')
-    gdf_c= gdf.query("LSOA21NM.str.contains('{}')".format(town_city))
+    G = ox.graph_from_point(origin, dist=radius_metres, network_type="drive")
+
+    lsoa_postcode = pd.read_csv("../data/pcd_lsoa21cd_nov22_en.csv")
+    lsoa_pop = pd.read_csv("../data/lsoa_global_number_residents_2021.csv")
+    gdf = gpd.read_file("../data/LSOA_2021_EW_BGC.shp")
+
     # set the CRS of the GeoDataFrame to British National Grid (EPSG:27700)
-    gdf_c = gdf_c.set_crs(epsg=27700)
-
+    gdf_s = gdf.set_crs(epsg=27700)
     # project the geometry to WGS84 (EPSG:4326)
-    gdf_c = gdf_c.to_crs(epsg=4326)
+    gdf_s = gdf.to_crs(epsg=4326)
+
+    gdf_s['first_coord'] = gdf_s['geometry'].apply(get_first_coord)
+    gdf_s['first_coord'] = gdf_s['first_coord'].apply(round_coord)
+
+     # Split first_coord into two separate columns
+    gdf_s['first_lon'], gdf_s['first_lat'] = zip(*gdf_s['first_coord'])
+
+    # Get the degrees equivalent to 5 miles
+    lat_deg, lon_deg = miles_to_degrees(radius_miles)
 
 
-    lsoa_codes = gdf_c['LSOA21CD'].tolist()
+
+    # Create a mask for rows where the first coordinates are within lat_deg and lon_deg of your given coordinates
+    mask = ((gdf_s['first_lat'].between(origin[0] - lat_deg, origin[0] + lat_deg)) &
+            (gdf_s['first_lon'].between(origin[1] - lon_deg, origin[1] + lon_deg)))
+
+    # Apply this mask to the GeoDataFrame
+    gdf_filtered = gdf_s[mask]
+
+
+
+    lsoa_codes = gdf_filtered["LSOA21CD"].tolist()
     lsoa_data = {lsoa_code: {} for lsoa_code in lsoa_codes}
 
-    for index, row in gdf_c.iterrows():
-        lsoa_code = row['LSOA21CD']
+    for index, row in gdf_filtered.iterrows():
+        lsoa_code = row["LSOA21CD"]
         if lsoa_code in lsoa_data:
-            lsoa_data[lsoa_code]['Latitude'] = row['geometry'].centroid.y
-            lsoa_data[lsoa_code]['Longitude'] = row['geometry'].centroid.x
-            node = ox.distance.nearest_nodes(G, row['geometry'].centroid.x, row['geometry'].centroid.y)
-            lsoa_data[lsoa_code]['Node'] = node
+            lsoa_data[lsoa_code]["Latitude"] = row["geometry"].centroid.y
+            lsoa_data[lsoa_code]["Longitude"] = row["geometry"].centroid.x
+            node = ox.distance.nearest_nodes(
+                G, row["geometry"].centroid.x, row["geometry"].centroid.y
+            )
+            lsoa_data[lsoa_code]["Node"] = node
 
     lsoa_population = {}
     for lsoa_code in lsoa_data:
-        population = lsoa_pop.loc[lsoa_pop['LSOA21CD'] == lsoa_code, 'Population'].iloc[0]
+        population = lsoa_pop.loc[lsoa_pop["LSOA21CD"] == lsoa_code, "Population"].iloc[
+            0
+        ]
         try:
-            latitude = lsoa_data[lsoa_code]['Latitude']
+            latitude = lsoa_data[lsoa_code]["Latitude"]
         except KeyError:
-            print(f'KeyError: Latitude not found for LSOA code {lsoa_code}')
+            print(f"KeyError: Latitude not found for LSOA code {lsoa_code}")
             latitude = None
         try:
-            longitude = lsoa_data[lsoa_code]['Longitude']
+            longitude = lsoa_data[lsoa_code]["Longitude"]
         except KeyError:
-            print(f'KeyError: Longitude not found for LSOA code {lsoa_code}')
+            print(f"KeyError: Longitude not found for LSOA code {lsoa_code}")
             longitude = None
-        lsoa_population[lsoa_code] = {'Population': population, 'Latitude': latitude, 'Longitude': longitude}
+        lsoa_population[lsoa_code] = {
+            "Population": population,
+            "Latitude": latitude,
+            "Longitude": longitude,
+        }
 
     # get LSOAs within search radius
     lsoas_in_radius = []
     for lsoa_code, data in lsoa_data.items():
-        distance=haversine(origin, (data['Latitude'], data['Longitude']),unit='km')
-        if distance <= radius_metres/1000:
-    
+        distance = haversine(origin, (data["Latitude"], data["Longitude"]), unit="km")
+        if distance <= radius_metres / 1000:
             lsoas_in_radius.append(lsoa_code)
-          
-          
+
     m = folium.Map(location=origin, zoom_start=12)
     folium.Marker(location=origin, tooltip=address).add_to(m)
-    folium.Circle(location=origin, radius=radius_metres, color='red', fill=False, tooltip='Search Radius').add_to(m)
+    folium.Circle(
+        location=origin,
+        radius=(radius_metres/x),
+        color="red",
+        fill=False,
+        tooltip="Search Radius",
+    ).add_to(m)
 
-    add_lsoas_to_map(lsoas_in_radius,m,gdf_c,lsoa_population)
+    add_lsoas_to_map(lsoas_in_radius, m, gdf_s, lsoa_population)
 
-    avg_travel_time, population_covered=get_average_travel_times(origin,radius_metres,lsoa_population,G,lsoas_in_radius,speed)
+    avg_travel_time, population_covered = get_average_travel_times(
+        origin, radius_metres, lsoa_population, G, lsoas_in_radius, speed
+    )
 
-    return m,avg_travel_time, population_covered
-    
+    return m, avg_travel_time, population_covered
 
 
 def get_average_travel_times(origin, radius_metres, lsoa_population, G,lsoas_in_radius,speed_mph):
@@ -146,28 +175,58 @@ def get_average_travel_times(origin, radius_metres, lsoa_population, G,lsoas_in_
 
 
 
-def add_lsoas_to_map(lsoas,m,gdf_c,lsoa_population):
+def add_lsoas_to_map(lsoas, m, gdf_filtered, lsoa_population):
     for lsoa_code in lsoas:
-        row = gdf_c.loc[gdf_c['LSOA21CD'] == lsoa_code].iloc[0]
-        population=lsoa_population[lsoa_code]['Population']
+        row = gdf_filtered.loc[gdf_filtered["LSOA21CD"] == lsoa_code].iloc[0]
+        population = lsoa_population[lsoa_code]["Population"]
 
-        if row['geometry'].geom_type == 'Polygon':
-            lsoa_boundary = [tuple(reversed(coord)) for coord in list(row['geometry'].exterior.coords)]
-        elif row['geometry'].geom_type == 'MultiPolygon':
-            largest_polygon = max(row['geometry'], key=lambda x: x.area) 
-            lsoa_boundary = [tuple(reversed(coord)) for coord in list(largest_polygon.exterior.coords)]
-
-    
+        if row["geometry"].geom_type == "Polygon":
+            lsoa_boundary = [
+                tuple(reversed(coord))
+                for coord in list(row["geometry"].exterior.coords)
+            ]
+        elif row["geometry"].geom_type == "MultiPolygon":
+            largest_polygon = max(row["geometry"], key=lambda x: x.area)
+            lsoa_boundary = [
+                tuple(reversed(coord))
+                for coord in list(largest_polygon.exterior.coords)
+            ]
 
         lsoa_polygon = folium.Polygon(
             locations=lsoa_boundary,
-            color='blue',
+            color="blue",
             fill=True,
-            fill_color='blue',
+            fill_color="blue",
             fill_opacity=0.2,
             tooltip=str(population),
         )
 
-   
         lsoa_polygon.add_to(m)
 
+def get_first_coord(geom):
+    if geom.type == 'MultiPolygon':
+        # Get the first polygon in the multi-polygon, then get its first coordinate
+        return geom.geoms[0].exterior.coords[0]
+    elif geom.type == 'Polygon':
+        # Get the first coordinate of the polygon
+        return geom.exterior.coords[0]
+
+def round_coord(coord):
+    # Unpack the longitude and latitude values
+    longitude, latitude = coord
+    # Round each value to 4 decimal places
+    return round(longitude, 4), round(latitude, 4)
+
+
+
+def miles_to_degrees(radius_miles):
+    # 1 degree of latitude is approximately 69.172 miles everywhere
+    lat_degrees = radius_miles / 69.172
+    
+    # Average value of cos(latitude) for England, UK (about 52 degrees)
+    cos_lat = math.cos(math.radians(52))
+    
+    # 1 degree of longitude at 52 degrees latitude is approximately 69.172 * cos(52) miles
+    lon_degrees = radius_miles / (69.172 * cos_lat)
+    
+    return lat_degrees, lon_degrees
