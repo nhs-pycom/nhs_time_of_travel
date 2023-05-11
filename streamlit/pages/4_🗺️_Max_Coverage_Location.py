@@ -43,7 +43,7 @@ def render_svg(svg):
 
 render_svg(svg)
 
-st.title("📍 Max Coverage Location")
+st.title("🗺️ Max Coverage Location")
 
 
 travelspeeds = {
