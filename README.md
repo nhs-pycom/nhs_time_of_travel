@@ -67,7 +67,7 @@ For example if you select 'Route Optimzer', this page will load, and likewise th
 
 - Select the Route Optimizer page from the left index. 
 - Here to use the page you will need data. The NHS Digital Hospital Dataset for England and Wales comes loaded as a default. Within the data folder in the repo, you'll also have access to the epraccur dataset, this is NHS England's GP Practice dataset. 
-- If you wish to use your own data, there is a templates folder, and within that Address_template.xlsx. Please enter the addresses you wish to use, in the format specified in this worksheet. If you change the format, the code will likely break, so please follow the format of this workbook. 
+- If you wish to use your own data, untick the '_filter data to City or County_' box, then click the Browse files button on the left index. There is a templates folder, and within that Address_template.xlsx, or Address_templates_split.xlsx. Please enter the addresses you wish to use, in the format specified in this worksheet. If you change the format, the code will likely break, so please follow the format of this workbook. 
 - To access other files apart from Hospital.csv, on the left of the page below the page selector, if a 'browse files' button. If you click here, this will access your computer, where you can load the Address_template, or the epraccur dataset, or any other dataset you've prepared in the same format as the Address_template.
 - Next, in the box titled 'Enter Town/ City or County (or both), either select a location from the dropdown, or delete what's in the box and type the town/city/ county you want the data for, for this page. This box filters the Hospital dataset to just the town/ city/ county you wish to inspect. The filtered dataframe will be visible once you've done this.
 - If you have start address that isn't the uploaded data, please enter it now in the 'Enter a new start address' field, please follow the format like this, '65 Goldsworth Road, Woking'.
@@ -82,6 +82,7 @@ For example if you select 'Route Optimzer', this page will load, and likewise th
 ### Multiple Shortest Route page
 
 - The start functionality is the same as the previous as regards data uploading. The Hospital dataset comes as pre-loaded, so I'll run through the rest of the instructions using this dataset.
+- If you wish to use your own data, untick the '_filter data to City or County_' box, then click the Browse files button on the left index. There is a templates folder, and within that Address_template.xlsx, or Address_templates_split.xlsx. Please enter the addresses you wish to use, in the format specified in this worksheet. If you change the format, the code will likely break, so please follow the format of this workbook. 
 - Select town/ city/ county (or both) from the 'Enter Town/ City or County (or both)' selector. This will filter the dataframe to that location.
 - Enter your target address in the titled box, in the following format, '2 Hill Road, Cambridge'.
 - Select the network type. 
@@ -103,7 +104,7 @@ Accessible in the 'data' folder, all of these are publicly available, either fro
 
 ### Templates
 
-This is a folder with a template for entering your own addresses. I've left a sample of five care homes here in York. The only necessity here is to enter the format in the columns provided, 'Name' & 'Address'. You will need to follow this format and enter the details as per the examples in the template. 
+This is a folder with a template for entering your own addresses. The only necessity here is to enter the format in the columns provided, 'Name' & 'Address'. You will need to follow this format and enter the details as per the examples in the template. 
 The code is set up to read the format, and will geocode the addresses if you follow this format. 
 
 
