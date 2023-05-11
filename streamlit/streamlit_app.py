@@ -26,32 +26,32 @@ def render_svg(svg):
     """Renders the given svg string."""
     b64 = base64.b64encode(svg.encode("utf-8")).decode("utf-8")
     html = r'<img src="data:image/svg+xml;base64,%s"/>' % b64
-    st.write(html, unsafe_allow_html=True)
+    #st.write(html, unsafe_allow_html=True)
 
 
 render_svg(svg)
 
-st.title("🚂 MedMap - NHS Geospatial Tool")
+st.title("🚂 MedMap - A Medical Geospatial Tool")
 
 st.sidebar.success("Select a page above.")
 
 st.markdown(
     """
-    Medical Map - NHS Streamlit geomapping tool
+    
 
     This work was led by Paul Carroll, Senior Data Scientist, Oliver Jones, Muhammed-Faaiz Shawanas, Mary Amanuel, as part of their roles with the Digital Analytics and Research Team at NHS England, and Nick Fortescue and Max Morozov, two brilliant engineers at GoogleHealth.
 
     The following page and accompanying GitHub repository contain the initial proof of concept and exploratory analysis for the design of a holistic and interactive mapping tool to support decision-making in health and social care.
 
-    A mapping tool could support national and regional commissioning strategies by facilitating the placement of new services and the reconfiguration of existing ones. It could also contribute to the NHS agenda for tackling health inequalities by enabling evidence-based decision-making by providing insight on how the availability of health and social care services is influenced by sociodemographic factors.
+    A mapping tool could support national and regional commissioning strategies by facilitating the placement of new services and the reconfiguration of existing ones. It could also contribute to saving costs for Trusts by providing a service for free, that is currently paid for. 
 
-    Using open-source software and publicly accessible datasets we're able to show three pages so far here; The first Multiple Shortest Routes, and can be used for staff routes to work; The second, Max Coverage Location, this can be used to score a site, e.g. a covid site or a new GP practice; Third the Travelling Salesman Problem, In health context this can be used for district nurse visits, or ambulance drop-offs. 
+    Using open-source software and publicly accessible datasets we're able to show three pages so far here; First, Route Optimisation, aka the Travelling Salesman Problem. In a health context this could be used for planning district nurse visits, or ambulance patient drop-offs. The second, Multiple Shortest Routes, this could be used to help planning for staff routes to work, and could help with suggesting lower emissions ways to work; The third, Max Coverage Location, this is our concept piece for site scoring. e.g. a covid site or a new GP practice. A good comparison here would be how retailers look to score a new site, and how they approach the problem.
 
     Please reach out if you have page suggestions, or wish to contribute. Either raise an issue on the Github site, or email paul.carroll9@nhs.net, or github.com/pauliecarroll.  Thank you.
 
     Source page: https://nhsx.github.io/nhs_time_of_travel/
     
-    Project board: https://github.com/orgs/nhs-pycom/projects/9/views/1
+    
 """
 )
 
