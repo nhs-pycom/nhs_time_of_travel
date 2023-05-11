@@ -103,8 +103,14 @@ This is a functionality that was brought by a couple of areas in the NHS. One us
 
 ### Max Coverage Location 
 
-This is the site scoring page. 
+This is the site scoring page. We have tried to take the approach here of providing a concept piece for how this page could work. Retailers use commercial software when it comes to identifying a new location, and take into account local population within a certain distance or time to travel, competitors, substitutes, and a variety of other factors. For our version, we have used time to travel, and population covered from LSOAs. In future, we could add in other hospitals, or gp practices, should the user the require this. 
+For now, the user can enter an address, enter the radius in miles around that address, and select the hard coded travel speed. This is weighted per population from the centre of each LSOA. 
+Upon hitting submit the user will see a folium map, with a red circumference, and blue highlighted LSOAs, which when you hover over them will display the population of that LSOA. Calculations underneath the map show the average weighted travel time for the population covered, and the total population covered. 
 
+<p align="centre">
+  <img src="images/png/mclp.png" width="1300" height="660">
+  &nbsp; &nbsp;
+</p>
 
 
 ## Citations
