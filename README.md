@@ -20,9 +20,9 @@ Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-se
 
 ### Project Aims
 
-The project was set up following feedback from several areas of the NHS, who responded to the original time_to_travel work that was presented at the NHS Pycom conference in 2022, [here](https://github.com/nhsx/nhs_time_of_travel/) and [here]( https://nhsx.github.io/nhs_time_of_travel/).
-Following this a collaboration took place with Googlehealth and Pycom combining to work one day a week on a project looking to solve some of the Geospatial problems that the NHS faces on a daily basis. 
-As the work developed, different areas of the NHS who use geospatial tools became more aware of the work, and a decision was made to try to build a piece of software that could be taken to NHS trusts and to the data herewithin. The aim being to keep the tool flexible, open, open-source, and adaptable. By keeping all the coding in python, we hope this opens up this tool to be adapted to different use cases by many different users, across the varying parts of the NHS. 
+The project was set up following feedback from several areas of the NHS, who responded to the original time_to_travel work that was presented at the NHS Pycom conference in 2022, [here](https://github.com/nhsx/nhs_time_of_travel/) and [here]( https://nhsx.github.io/nhs_time_of_travel/). This original piece of work was a learning & development 1 week project that took place in March 2022.
+Following the pycom conference a collaboration took place, between Googlehealth and Pycom combining to work one day a week on a project to produce a concept piece of work, that might be able to solve some of the Geospatial problems that the NHS faces on a daily basis. 
+As the work developed, different areas of the NHS who use geospatial tools became more aware of the work, and a decision was made to try to build a piece of software that could be taken to NHS trusts and to the data herewithin. The aim being to keep the tool flexible, open, open-source, and adaptable. By keeping all the coding in python, we hope this opens up this tool to be adapted to different use cases by many different users, and that this tool could be used across the varying parts of the NHS. 
 
 ### Built With
 
