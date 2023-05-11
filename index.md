@@ -108,7 +108,7 @@ For now, the user can enter an address, enter the radius in miles around that ad
 Upon hitting submit the user will see a folium map, with a red circumference, and blue highlighted LSOAs, which when you hover over them will display the population of that LSOA. Calculations underneath the map show the average weighted travel time for the population covered, and the total population covered. 
 
 <p align="centre">
-  <img src="images/png/mclp.png" width="1300" height="660">
+  <img src="images/png/mclp.png" width="1300" height="880">
   &nbsp; &nbsp;
 </p>
 
