@@ -13,7 +13,7 @@ from scripts.max_coverage_location import GeocodingError
 
 st.set_page_config(
     page_title="Max Coverage Location aka Site scoring",
-    page_icon="📍",
+    page_icon="🗺️",
 )
 
 # NHS Logo
