@@ -99,6 +99,20 @@ Your data is not cached, only the Nominatim api region calls.
 ### Multiple Shortest Route
 
 This is a functionality that was brought by a couple of areas in the NHS. One use case here is suggesting different modes of transport for the shortest route to work for staff, and a future use case could incorporate bus routes, and bus timetables, or public transport routes and timetables. Whilst this function works in a different way from the route optimiser, the premis is the same. The user can again either upload or use the existing datasets in the data folder. Enter a target address, select the network type, press submit and the algorithm will run. 
+We envisage this page working when the user inputs their own data, for example addresses for staff, or patients, and runs the algorithm. The algorithm will produce routes to and from each address to the selected target point. 
+In the example shown below, I've put the target address as Leicester Railway Station, London Road, Leicester. Again the default here is the hospital.csv dataset, so the hospitals in Leicester are pre-loaded. The functionality visible here is tri-fold. Firstly the map shows you the target, and the markers for each hospital location. If you click on the markers, the details of that marker come up, Leicester Railway Station is shown in this example. Secondly the top right is a route filter, and you can turn the different routes on and off for visibility, shown in the second pic below. 
+Thirdly, the dataframe beneath the map show the different routes, distances, and walking, and peak and off-peak driving times in minutes. Here this could be adapted to show bus routes or cycle times. 
+
+<p align="centre">
+  <img src="images/png/msr.png" width="1300" height="660">
+  &nbsp; &nbsp;
+</p>
+
+
+<p align="centre">
+  <img src="images/png/route_filter.png" width="1300" height="660">
+  &nbsp; &nbsp;
+</p>
 
 
 ### Max Coverage Location 
@@ -112,6 +126,7 @@ Upon hitting submit the user will see a folium map, with a red circumference, an
   &nbsp; &nbsp;
 </p>
 
+The two variables that are used here, population, and weighted average time to travel for the selected speed, are shown beneath the map. In this case, 33 minutes, with walking at 3mph selected (this is hard-coded but the speed can be changed), and population covered 118,017.
 
 ## Citations
 
