@@ -35,12 +35,13 @@ As the work developed, different areas of the NHS who use geospatial tools becam
 
 ## Installation
 
+Either use VScode (View, command palette, git clone) or terminal/ iterm/ powershell to clone the repo. Create a new folder, in that new folder you can use terminal to enter....
 To clone the repo:
 
 `git clone https://github.com/nhs-pycom/nhs_time_of_travel.git`
 
+Then using terminal/ iterm/ powershell, move into that folder, cd nhs_time_of_travel/streamlit, and once you in that folder run the following commands.
 
-cd streamlit, into the streamlit folder. Once there please follow these instructions:
 
 Unix/macOS
 ```bash
