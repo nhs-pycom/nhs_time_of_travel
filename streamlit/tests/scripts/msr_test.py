@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 import pandas as pd
 from scripts.msr import *
 
@@ -11,10 +12,14 @@ class TestMSR(unittest.TestCase):
         self.assertEqual(result, (52, 0))
 
     def test_get_long_lat_from_address(self):
-        # Construct dataframe and
-        df = pd.DataFrame([{"Address": "Oriental Road, Woking"}])
+        # Construct dataframe containing known point. This point should be:
+        # something that is important enough we expect the Geocoder to definitely code it
+        # something small enough there won't be much ambiguity about Latitude and longitude
+        # For now have chosen 11 Downing Street (the chancellor's residence). Small enough
+        # to be precise, famous enough to be pretty sure it will exist
+        df = pd.DataFrame([{"Address": "11 Downing Street, London"}])
         result = get_lat_long(False, df.iloc[0, :])
-        self.assertEqual(result, (51.3178181, -0.556127))
+        np.testing.assert_almost_equal(result, (51.50341, -0.12784), decimal=5)
 
     def test_travel_times(self):
         df = pd.DataFrame([{"Name": "foo", "Address": "untouched Address"}])
