@@ -16,7 +16,7 @@ following page refers to. Please raise any issues with the code using the issues
 
 ### Use-cases 
 
-Following a presentation at NHS-Pycom on the aforementioned Geospatial work, several different areas of the NHS contacted me, and they identified where there are current gaps and needs, 
+Following a presentation at NHS-Pycom on the aforementioned Geospatial work, and several conversations post the presentation, they identified where there are current gaps and needs, 
 or use-cases for which a geospatial tool, built specifically for purpose, could help solve the issues they faced. The use-cases they faced were numerous:
 
 - Ambulance drop-offs/ Patient transport
