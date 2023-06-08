@@ -53,7 +53,7 @@ pipenv shell
 
 This will launch your pip environment with the necessary installations and dependencies. 
 
-Finally to launch the streamlit app, make sure you're in nhs_time_of_travel/streamlit and run the following command.
+Finally to launch the streamlit app, make sure you're in nhs_time_of_travel/streamlit folder and run the following command.
 ```bash
 streamlit run streamlit_app.py
 ```
