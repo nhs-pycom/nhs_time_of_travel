@@ -25,11 +25,10 @@ def uploader(file, file_type):
     if file is not None:
         df = load_data_xls(file)
         print(df.to_string())
-        # df = df.dropna(subset=['County'])
-        # df['Address'] = df[['Address1','Address2','Address3']].astype(str).agg(', '.join,axis=1)
+
         df["Address"] = df["Address"].str.title()
         df["Address"] = df["Address"].str.replace("Nan", "").str.replace(",", " ")
-        # df['Name'] = df['OrganisationName'].str.title()
+
         df = df.loc[:, df.columns.isin(["Name", "Address", "City", "County"])]
         filename = file.name
 
