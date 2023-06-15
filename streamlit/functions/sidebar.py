@@ -18,7 +18,7 @@ def sidebar(uploader: bool):
         st.title("About")
         st.info(
             """
-        Developed by: NHS England
+       
 
         GitHub repository: <https://github.com/nhs-pycom/nhs_time_of_travel>
         """
