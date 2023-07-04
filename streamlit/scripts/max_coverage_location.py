@@ -136,8 +136,7 @@ def get_average_travel_times(origin, lsoa_population, G, lsoas_in_radius, speed_
 
 
 def add_lsoas_to_map(lsoas, m, gdf_filtered, lsoa_population):
-    #    for lsoa_code in lsoas:
-    #        row = gdf_filtered.loc[gdf_filtered["LSOA21CD"] == lsoa_code].iloc[0]
+
 
     for i, row in gdf_filtered.iterrows():
         lsoa_code = row["LSOA21CD"]
