@@ -1,0 +1,7 @@
+site_name: MedicalMap
+site_url: https://MedicalMap.com/
+nav:
+  - Home: index.md
+ 
+plugins:
+    - table-reader
