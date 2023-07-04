@@ -22,9 +22,9 @@ def get_lsoas_from_postcode(list_of_target_addresses):
     )
     # get the lsoa 2021 code from the lookup file
     lsoa_names = []
-    # lsoa_codes = []
+
     for postcode in list_of_target_addresses:
-        # lsoa_codes.append(postcode_lookup.loc[postcode_lookup['pcds'] == postcode]['lsoa21cd'].values[0])
+
         lsoa_names.append(
             postcode_lookup.loc[postcode_lookup["pcds"] == postcode]["ladnm"].values[0]
         )
