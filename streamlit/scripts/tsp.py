@@ -13,12 +13,9 @@ from itertools import combinations
 
 
 def main(filtered_df, start_address, network_type, radius_miles):
-    # county = filtered_df['County'].iloc[0] if filtered_df['County'].iloc[0] != 'N/A' else filtered_df['County'].iloc[1]
-    ox.config(log_console=True, use_cache=True)
-    # start_location = ox.geocode(start_address)
-    # G = ox.graph_from_place(city_or_county, network_type=network_type)
 
-    # target = ox.nearest_nodes(G, start_location[1],Y=start_location[0])
+    ox.config(log_console=True, use_cache=True)
+
     geolocator = Nominatim(user_agent="myGeocoder")
 
     coords, addresses = get_coords_addresses(filtered_df, geolocator)
@@ -36,31 +33,9 @@ def main(filtered_df, start_address, network_type, radius_miles):
     )  # about a km extra
 
     G = ox.graph_from_bbox(north, south, east, west, network_type=network_type)
-    # G = ox.graph_from_place(county, network_type=network_type)
 
-    """
-    use_long_lat = False
-    if 'Longitude' in filtered_df.columns and 'Latitude' in filtered_df.columns:
-        use_long_lat = True
 
-    
-    coords = []
 
-    for _, row in filtered_df.iterrows():
-        try:
-            if use_long_lat:
-                coord = (row['Latitude'], row['Longitude'])
-            else:
-                location = geolocator.geocode(row['Address'])
-                coord = (location.latitude, location.longitude)
-            coords.append(coord)
-        except Exception as e:
-            print(f"Error: {e}")
-            pass
-
-    # make addresses a list
-    addresses=list(filtered_df['Address'])
-    """
     # distance dict
     distance_dict = {}
     for coord_pair in combinations(coords, 2):
@@ -156,23 +131,7 @@ def main(filtered_df, start_address, network_type, radius_miles):
     df = pd.DataFrame(distance_data)
     return m, df
 
-    """
-    new_df = filtered_df[['Name', 'Address', 'Distance in Miles']].copy()
-    new_df['Distance in Miles'] = new_df['Distance in Miles'].round(2)
-    walking_speed = 3  # mph    
-    new_df['Walking time (min)'] = (new_df['Distance in Miles'] / walking_speed) * 60
 
-
-    peak_driving_speed = 15  # mph
-    new_df['Peak driving time (min)'] = (new_df['Distance in Miles'] / peak_driving_speed) * 60
-
-
-    off_peak_driving_speed = 25  # mph
-    new_df['Off-peak driving time (min)'] = (new_df['Distance in Miles'] / off_peak_driving_speed) * 60
-
-    cycle_speed = 16 #mph
-    new_df['Cycle time (min)'] = (new_df['Distance in Miles'] / cycle_speed)* 60
-    """
 
 
 def get_coords_addresses(df, geolocator):
