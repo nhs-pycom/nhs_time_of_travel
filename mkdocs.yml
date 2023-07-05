@@ -3,5 +3,7 @@ site_url: https://medicalmap.com/
 nav:
   - Home: index.md
 
+theme: readthedocs
+
  
 
