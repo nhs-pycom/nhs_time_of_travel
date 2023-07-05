@@ -2,8 +2,6 @@ site_name: MedicalMap
 site_url: https://medicalmap.com/
 nav:
   - Home: index.md
-theme: 
-  name: material
-  logo: 
+
  
 
