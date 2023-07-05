@@ -1,5 +1,5 @@
 site_name: MedicalMap
-site_url: https://medicalmap.com/
+site_url: https://nhsengland.github.io/medicalmap.com/
 nav:
   - Home: index.md
 
