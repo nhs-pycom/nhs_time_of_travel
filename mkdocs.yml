@@ -3,7 +3,8 @@ site_url: https://nhsengland.github.io/medicalmap.com/
 nav:
   - Home: index.md
 
-theme: readthedocs
+theme: 
+  name: readthedocs
 
  
 
