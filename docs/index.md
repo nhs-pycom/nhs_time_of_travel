@@ -1,7 +1,7 @@
 
 ### MedicalMap 
 
-### A NHS Geospatial Tool
+## A NHS Geospatial Tool
 
 This was led by [Paul Carroll](https://github.com/pauliecarroll), Senior Data Scientist, at the Digital Analytics & Research Team at NHS England, with a team comprising of 
 [Oliver Jones](https://github.com/oliverjonesnhsx), [Muhammed-Faaiz Shawanas](https://github.com/faaiz-25), [Mary Amanuel](https://github.com/maryamanuel1), from NHS England, & 
@@ -30,7 +30,7 @@ or use-cases for which a geospatial tool, built specifically for purpose, could 
 - Where to site a Diabetes or blood test van in order to cut missed appointments for patients by making it easier for them to access services.
 
 
-### Our Angle -  Cost & Data. Solve these two problems.
+### Cost & Data. Solve these two problems.
 
 The more we spoke to different areas of the NHS the more this need became apparent. What also became apparent was the cost of some of these services. Numerous trusts are paying commercial 
 operators for these services. Sometimes these were the only operators out there, as there was nothing publicly available or free. 
@@ -41,7 +41,7 @@ This app can be spun up on anyone's laptop, and the data would never need to lea
 Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data).
 
 
-### What our tool does -  Streamlit
+### What our tool does -  Streamlit & Functions
 
 Streamlit is an app wrapper, extremely useful and malleable. Especially so when it comes to geospatial work. I carried out some research on Geospatial tools and the best way to approach 
 multiple functionalities, and the shining example of this is this page https://github.com/opengeos/streamlit-geospatial. Professor [Qiusheng Wu] https://github.com/giswqs and his 
@@ -49,13 +49,12 @@ geospatial page showed us what was possible, and gave us a great example of how 
 functions run together in one app and one place. 
 
 
-### Three Pages .... so far
+## Three Pages
 
 ### Route Optimisation - aka The Travelling Salesman Problem
 
-To tackle the use-cases of Ambualnce drop-offs/ Patient transport, District Nurse visits, or blood deliveries, it became clear the issue here to solve was one of route optimisation. 
-I researched how to go about this online, read several medium articles and also read through several github repositories. In computer science this problem is a NP hard problem, and there 
-were no easy solutions out there. There were also quite a few commercial operators in this space, and rightly so, for 10 different addresses, 10 permutations with P(10, 10) gives 3.6 
+To tackle the use-cases of Ambulance drop-offs/ Patient transport, District Nurse visits, or blood deliveries, it became clear the issue here to solve was one of route optimisation. 
+I researched how to go about this online, read several medium articles and also read through several github repositories. In computer science this problem is a NP hard problem, and there were no easy solutions out there. There were also quite a few commercial operators in this space, and rightly so, for 10 different addresses, 10 permutations with P(10, 10) gives 3.6 
 million approximate outcomes, with 12 addresses this goes up significantly to 479 million. Trying to solve this problem in way that would be computationally relevant for the likely 
 laptop power in a NHS trust was a real need here. But also there was a sweetspot. How many patients was a district nurse likely to visit in a day. How many patient drop-offs would there 
 be before an ambulance would need to return to hospital, especially in this post covid world. Both of these answers we'd imagine would be less than 12. 
@@ -99,7 +98,7 @@ Your data is not cached, only the Nominatim api region calls.
 
 ### Multiple Shortest Route
 
-This is a functionality that was brought by a couple of areas in the NHS. One use case here is suggesting different modes of transport for the shortest route to work for staff, and a future use case could incorporate bus routes, and bus timetables, or public transport routes and timetables. Whilst this function works in a different way from the route optimiser, the premis is the same. The user can again either upload or use the existing datasets in the data folder. Enter a target address, select the network type, press submit and the algorithm will run. 
+This is a functionality that was suggested by a couple of areas in the NHS. One use case here is suggesting different modes of transport for the shortest route to work for staff, and a future use case could incorporate bus routes, and bus timetables, or public transport routes and timetables. Whilst this function works in a different way from the route optimiser, the premise is the same. The user can again either upload or use the existing datasets in the data folder. Enter a target address, select the network type, press submit and the algorithm will run. 
 We envisage this page working when the user inputs their own data, for example addresses for staff, or patients, and runs the algorithm. The algorithm will produce routes to and from each address to the selected target point. 
 In the example shown below, I've put the target address as Leicester Railway Station, London Road, Leicester. Again the default here is the hospital.csv dataset, so the hospitals in Leicester are pre-loaded. The functionality visible here is tri-fold. Firstly the map shows you the target, and the markers for each hospital location. If you click on the markers, the details of that marker come up, Leicester Railway Station is shown in this example. Secondly the top right is a route filter, and you can turn the different routes on and off for visibility, shown in the second pic below. 
 Thirdly, the dataframe beneath the map show the different routes, distances, and walking, and peak and off-peak driving times in minutes. Here this could be adapted to show bus routes or cycle times. 
@@ -133,16 +132,11 @@ The two variables that are used here, population, and weighted average time to t
 
 Boeing, G. 2017. [OSMnx: New Methods for Acquiring, Constructing, Analyzing, and Visualizing Complex Street Networks.](https://geoffboeing.com/publications/osmnx-complex-street-networks/)<i>Computers, Environment and Urban Systems</i> 65, 126-139. doi:10.1016/j.compenvurbsys.2017.05.004
 
+Professor [Qiusheng Wu] https://github.com/giswqs; 
+https://github.com/opengeos/streamlit-geospatial. 
+
 ## About this page
 
-This page is built using end-to-end open source analytical tools including: [The NHS Digital Service Manual](https://service-manual.nhs.uk/), [python](https://nhs-pycom.net/), [OSMnx](https://osmnx.readthedocs.io/en/stable/), [plotly](https://plotly.com/python/), [folium](http://python-visualization.github.io/folium/), [GeoPy](https://geopy.readthedocs.io/en/stable/), [beautiful soup](https://www.crummy.com/software/BeautifulSoup/), [pandas](https://pandas.pydata.org/docs/), [GeoPandas](https://geopandas.org/en/stable/), [NetworkX](https://networkx.org/documentation/stable/index.html), [geojson](https://python-geojson.readthedocs.io/en/latest/), [github.io](https://pages.github.com/), and [github actions](https://github.com/features/actions).
+This page is built using end-to-end open source analytical tools including: [The NHS Digital Service Manual](https://service-manual.nhs.uk/), [python](https://nhs-pycom.net/), [OSMnx](https://osmnx.readthedocs.io/en/stable/), [plotly](https://plotly.com/python/), [folium](http://python-visualization.github.io/folium/), [GeoPy](https://geopy.readthedocs.io/en/stable/), [pandas](https://pandas.pydata.org/docs/), [GeoPandas](https://geopandas.org/en/stable/), [NetworkX](https://networkx.org/documentation/stable/index.html), [geojson](https://python-geojson.readthedocs.io/en/latest/), [github.io](https://pages.github.com/), and [github actions](https://github.com/features/actions).
 
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="https://github.com/nhsx/open-analytics-template">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Find out how to build your own open analytics pipeline</span>
-  </a>
-</div>
+
