@@ -29,10 +29,10 @@ or use-cases for which a geospatial tool, built specifically for purpose, could 
 - Where to site a Diabetes or blood test van in order to cut missed appointments for patients by making it easier for them to access services.
 
 
-### Cost & Data. Solve these two problems.
+### Time & Data. Solve these two problems.
 
 The more we spoke to different areas of the NHS the more this need became apparent. What also became apparent was the cost of some of these services. Numerous trusts are paying commercial 
-operators for these services. Sometimes these were the only operators out there, as there was nothing publicly available or free. 
+operators for these services. Sometimes these were the only operators out there, as there was nothing publicly available or free. Can we make the way these services are executed more efficient, can we help staff hit targets, and in doing so boost staff retention, can we help trusts fit in more appointments, or at least carry out their appointment list more efficiently and spend less time travelling and more time with patients. 
 But for other services the second need was the need for patient/ staff data to remain confidential, and remain within the trust. Within the NHS data protection is paramount, so taking 
 this account, we wanted to build a tool that could be brought to the data. Using open-source software and publicly accessible datasets we wanted to show what is possible and ideally provide this repo as a source for different areas of the NHS to adapt to their own specific needs. There are two publicly available datasets we have used, and these are from NHS Digital. The main software we used is Python 3.10+. The app functionality is Streamlit, with several Geospatial libraries within Python.
 This app can be spun up on anyone's laptop, and the data would never need to leave that machine. 
