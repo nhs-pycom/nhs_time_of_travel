@@ -40,7 +40,7 @@ To clone the repo:
 
 `git clone https://github.com/nhs-pycom/nhs_time_of_travel.git`
 
-Then using terminal/ iterm/ powershell, move into that folder, cd nhs_time_of_travel/streamlit, and once you in that folder run the following commands.
+Then using terminal/ iterm/ powershell, move into that folder, cd nhs_time_of_travel/streamlit, and once you are in that folder run the following commands.
 
 
 Unix/macOS
