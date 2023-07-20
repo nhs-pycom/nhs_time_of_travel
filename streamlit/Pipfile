@@ -48,5 +48,4 @@ nhstravel = {editable = true, ref = "c73ed01db70dfaa819ec51bfa1e8ff1365e668b9", 
 [dev-packages]
 ipykernel = "*"
 
-[requires]
-python_version = "3.10"
+
