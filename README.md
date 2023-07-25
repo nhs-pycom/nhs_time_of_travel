@@ -14,7 +14,7 @@ The tool is a mapping tool that could support national and regional commissionin
 
 Using open-source software and publicly accessible datasets we're able to show three pages here so far; The first, Route Optimisation, a.k.a. the Travelling Salesman Problem; in a health context this could be used to plan district nurse visits, for ambulance drop-offs, or for blood packages deliveries. It has a multitude of uses. The second, Multiple Shortest Routes, this can be used for staff routes to work, and to reduce emissions, a focus that is gaining importance for travel planners. Third, Max Coverage Location, this can be used to score a site, e.g. a covid site or a new GP practice.
 
-Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data).
+Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data)
 
 <hr class="nhsuk-u-margin-top-0 nhsuk-u-margin-bottom-6">
 
