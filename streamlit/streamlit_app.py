@@ -29,9 +29,9 @@ st.markdown(
 
     Using open-source software and publicly accessible datasets we're able to show three pages so far here; First, Route Optimisation, aka the Travelling Salesman Problem. In a health context this could be used for planning district nurse visits, or ambulance patient drop-offs. The second, Multiple Shortest Routes, this could be used to help planning for staff routes to work, and could help with suggesting lower emissions ways to work; The third, Max Coverage Location, this is our concept piece for site scoring. e.g. a covid site or a new GP practice. A good comparison here would be how retailers look to score a new site, and how they approach the problem.
 
-    Please reach out if you have page suggestions, or wish to contribute. Either raise an issue on the Github site, or email paul.carroll9@nhs.net, or github.com/pauliecarroll.  Thank you.
+    Please reach out if you have page suggestions, or wish to contribute. Either raise an issue on the Github site, or email paul.carroll9@nhs.net, or github.com/pauldcarroll.  Thank you.
 
-    Source page: https://nhsx.github.io/nhs_time_of_travel/
+    Source pages: https://github.com/nhs-pycom/nhs_time_of_travel/blob/main/index.md, https://nhsx.github.io/nhs_time_of_travel/
     
     
 """
