@@ -63,28 +63,24 @@ def generate_neighboring_polys(list_of_target_addresses, lsoa_names, radius):
         # convert coordinates to a point object to check if this point is contained within the bounding poly
         target_point = Point(target_coords[1], target_coords[0])
 
-        # store the features from remapped_lsoa (lsoa_loaders module)
-        neighboring_polys = {"lsoa_codes": [], "population": [], "polygons": []}
-        for lsoa in remapped_lsoa["features"]:
-            lsoa_polygon = shape(lsoa["geometry"])
-            if lsoa_polygon.contains(target_point) or bounding_poly.intersects(
-                lsoa_polygon
-            ):
-                neighboring_polys["lsoa_codes"].append(lsoa["properties"]["LSOA21CD"])
-                neighboring_polys["population"].append(lsoa["properties"]["all ages"])
-                neighboring_polys["polygons"].append(lsoa_polygon)
+        #store the features from remapped_lsoa (lsoa_loaders module)
+        neighboring_polys = {'lsoa_codes':[], 'population':[], 'polygons':[]}
+        for lsoa in remapped_lsoa['features']:
+            lsoa_polygon = shape(lsoa['geometry'])
+            if lsoa_polygon.contains(target_point) or lsoa_polygon.distance(target_point) < radius:
+                neighboring_polys['lsoa_codes'].append(lsoa['properties']['LSOA21CD'])
+                neighboring_polys['population'].append(lsoa['properties']['all ages'])
+                neighboring_polys['polygons'].append(lsoa_polygon)
+        
+  
 
-        neighboring_polys_dict[address] = neighboring_polys
-    return neighboring_polys_dict, remapped_lsoas_dict
-
-
-# create networkx map from the neighbouring polygons we create using the function above
-# without allow_output_mutation, st.cache is performing a hash of the entire graph on every run. This is taking a long time. Skip check
 @st.cache(persist=True, allow_output_mutation=True)
-def generate_networkx(list_of_target_addresses, neighboring_polys_dict, type):
-    # intiialise main dict to contain each networkx map and nodes
-    networkx_dict = {}
 
+def generate_networkx(list_of_target_addresses, neighboring_polys_dict, route_type = 'walk'):
+    #intiialise main dict to contain each networkx map and nodes
+
+    networkx_dict = {}
+ 
     for address in list_of_target_addresses:
         # initialies data types for each address in the dictionary
         networkx_dict[address] = {}
@@ -92,19 +88,16 @@ def generate_networkx(list_of_target_addresses, neighboring_polys_dict, type):
         # create merged polygon to generate map from this area
         merged_poly = unary_union(neighboring_polys_dict[address]["polygons"])
 
-        # generate networkx map and nodes and store in dictionary under the sub key for address
-        G = ox.graph_from_polygon(merged_poly)
-        networkx_dict[address]["map"] = G
-        nodes, edges = ox.graph_to_gdfs(G)
-        networkx_dict[address]["nodes"] = nodes
+        #generate networkx map and nodes and store in dictionary under the sub key for address
+        G = ox.graph_from_polygon(merged_poly, network_type = route_type)
+        networkx_dict[address]['map'] = G
 
     return networkx_dict
 
 
-# funtion to generate the sample of nodes from each collection of lsoas for each target location
-def generate_nodes_samples(
-    list_of_target_adddresses, neighboring_poly_dict, networkx_dict
-):
+
+#function to generate the sample of nodes from each collection of lsoas for each target location
+def generate_nodes_samples(list_of_target_addresses, neighboring_polys_dict, networkx_dict):
     dict_of_nodes_samples = {}
     for address in list_of_target_addresses:
         nodes = networkx_dict[address]["nodes"]
@@ -362,22 +355,13 @@ def save_maps(site_names, route_maps):
 # main function to generate networkx map then generate the scores and folium map for each proposed target location
 def mclp_main(list_of_target_addresses, radius):
     lsoa_names = get_lsoas_from_postcode(list_of_target_addresses)
-    neighboring_polys_dict, remapped_lsoas_dict = generate_neighboring_polys(
-        list_of_target_addresses, lsoa_names, radius
-    )
-    networkx_dict = generate_networkx(
-        list_of_target_addresses, neighboring_polys_dict, type
-    )
-    dict_of_nodes_samples = generate_nodes_samples(
-        list_of_target_addresses, neighboring_polys_dict, networkx_dict
-    )
-    (
-        target_to_node_routes,
-        target_scores,
-        site_names,
-    ) = generate_target_routes_and_scores(
-        networkx_dict, dict_of_nodes_samples, list_of_target_addresses, radius
-    )
+    neighboring_polys_dict, remapped_lsoas_dict = generate_neighboring_polys(list_of_target_addresses, lsoa_names, radius)
+    networkx_dict = generate_networkx(list_of_target_addresses, neighboring_polys_dict, route_type = 'walk')
+    dict_of_nodes_samples = generate_nodes_samples(list_of_target_addresses, neighboring_polys_dict, networkx_dict)
+    target_to_node_routes, target_scores, site_names = generate_target_routes_and_scores(networkx_dict, dict_of_nodes_samples, list_of_target_addresses, radius)
+    
+    
+
 
     first_target = ox.geocode(list_of_target_addresses[0])
 
