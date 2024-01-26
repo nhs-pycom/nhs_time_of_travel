@@ -4,9 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+descartes = ">=1.1.0"
+geojson = "==2.5.0"
+geopandas = ">=0.12.1"
+haversine = ">=2.8.0"
+matplotlib = ">=3.6.2"
+networkx = ">=2.8.8"
+osmnx = ">=1.2.2"
+pandas = '>=1.5.2'
+shapely = ">=1.8.5.post1"
 
 [dev-packages]
-ipykernel = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.11"

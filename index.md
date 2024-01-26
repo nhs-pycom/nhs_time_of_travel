@@ -1,232 +1,142 @@
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
-
-## Medical Map
-
-This work was led by [Paul Carroll](https://github.com/pauliecarroll), Senior Data Scientist, with a team comprising of [Oliver Jones], [Mohammed Faaiz],[Max Morisov][Nick Fortescue] and [Mary Amanuel], Max and Nick engineers at GoogleHealth, and Ollie, Faaiz, and Mary NHS England colleagues.
-
-The following page and accompanying [GitHub repository](https://github.com/nhsx/nhs_time_of_travel) contain the initial proof of concept and exploratory analysis for the design of a holistic and interactive mapping tool to support decision-making in health and social care.
-
-A mapping tool could support national and regional commissioning strategies by facilitating the placement of new services and the reconfiguration of existing ones. It could also contribute to the NHS agenda for tackling health inequalities by enabling evidence-based decision-making by providing insight on how the availability of health and social care services is influenced by sociodemographic factors.
-
-Using open-source software and publicly accessible datasets we're able to show three pages here so far; The first, Multiple Shortest Routes, this can be used for staff routes to work. The second, Max Coverage Location, this can be used to score a site, e.g. a covid site or a new GP practice. Third, the Travelling Salesman Problem; in a health context this could be used to plan district nurse visits, or for ambulance drop-offs.
-
-Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data), [Uber Movement](https://movement.uber.com/)
-
-<hr class="nhsuk-u-margin-top-0 nhsuk-u-margin-bottom-6">
-
-### Project Aims
-
-The project was set up following feedback from several areas of the NHS, who responded to the original time_to_travel work that was presented at the NHS Pycom conference in 2022, [here](https://github.com/nhsx/nhs_time_of_travel/) and [here]( https://nhsx.github.io/nhs_time_of_travel/).
-Following this a collaboration took place with Googlehealth and Pycom combining to work on a week by week project looking to solve some of the Geospatial problems that the NHS faces on a daily basis. 
-As the work developed, different areas of the NHS who use geospatial tools became more aware of the work, and a decision was made to build a piece of software that could be taken to NHS trusts and to the data herewithin. The aim being to keep the tool flexible, open, open-source, and adaptable. By keeping all the coding in python, we hope this opens up this tool to be adapted to different use cases by many different users, across the varying parts of the NHS. 
 
 
-### Installation
+## MedMap - A NHS Geospatial Tool
 
-cd into the streamlit folder. Once there please follow these instructions:
+This was led by [Paul Carroll](https://github.com/pauliecarroll), Senior Data Scientist, at the Digital Analytics & Research Team at NHS England, with a team comprising of 
+[Oliver Jones](https://github.com/oliverjonesnhsx), [Muhammed-Faaiz Shawanas](https://github.com/faaiz-25), [Mary Amanuel](https://github.com/maryamanuel1), from NHS England, & 
+[Nick Fortescue](https://github.com/nickfortescuegoogle), [Max Morisov](https://github.com/maxim-morosov) engineers at GoogleHealth, without whom this work would not be where it is. 
+ 
+The following [GitHub repository](https://github.com/nhsx/nhs_time_of_travel) contains the initial proof of concept and exploratory analysis for the design of a holistic and interactive 
+mapping tool to support decision-making in health and social care. This work was carried out by carried out by [Mattia Ficarelli](https://github.com/mattia-ficarelli), Data Engineer, 
+and [Paul Carroll](https://github.com/pauliecarroll).
 
-Unix/macOS
-```bash
-pipenv install --python 3.10
-pipenv install -r requirements.txt
-pipenv shell
-```
-
-This was launch your pip environment with the necessary installations and dependencies. 
-Once this is open run "conda install cartopy". 
-
-Finally to launch the streamlit app:
-```bash
-streamlit run streamlit_app.py
-```
-
-The code for this section of the project can be found [here](https://github.com/nhsx/nhs_time_of_travel/blob/main/walking_gp_practice_cambridge.ipynb).
-
-Cambridge was selected as a case city to explore the walking distance to GP practices due to its relatively small size and because central Cambridge is well defined by the CB1, CB2, CB3, CB4, and CB5 postcodes (highlighted in blue in the Cambridge postcode map). The currently active GP practices within the central Cambridge postcode areas were extracted from the [EPRACCUR dataset](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data), which contains data for general Medical Practices supplied by the NHS Prescription Services and published by NHS Digital.
-
-Using the [GeoPy library](https://geopy.readthedocs.io/en/stable/#) and the [Nominatim API](https://nominatim.org/) the coordinates for the central Cambridge GP practices were identified from GP Practice postcodes. GeoPy allows for the use of multiple different geolocation services, including Google Maps and Bing Maps. Nominatim was selected as it is free to use (limited to a maximum of 1 request per second) and because it is integrated with OpenStreetMap. Due to its usage limits, Nominatim is not suitable for heavy use and does not support systematic queries. Before using Nominatim please read its [usage policy](https://operations.osmfoundation.org/policies/nominatim/).
-
-The [Folium library](https://python-visualization.github.io/folium/) was used to map the GP practices in central Cambridge using their coordinates. Click on an individual marker for the GP practice name, code, address, and contact information.
-
-<p align="left">
-  <iframe width= "455" height="455"  src="images/folium/cambridge_postcode_map.html" style="border:none;"></iframe>
-  &nbsp; &nbsp;
-  <iframe width= "455" height="455"  src="images/folium/cambridge_map_no_travel.html" style="border:none;"></iframe>
-</p>
-
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="data/cambridge_gp_practices.csv">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Download the Cambridge GP practice dataset (.csv)</span>
-  </a>
-</div>
-
-Determining areas which have poor access to health and social care services could inform new service placement strategies. Isochrones are areas on a map accessible from a point within a certain time threshold. Using the [OSMnx library](https://osmnx.readthedocs.io/en/stable/) we aimed to determine the areas of central Cambridge (isochrones ) which were 5 minutes, 10 minutes, and 20 minutes walking distance from any of the central Cambridge GP practices.
-
-OSMnx is a Python package that lets you download geospatial data from [OpenStreetMap](https://www.openstreetmap.org/) and model, project, visualise and analyse real-world street networks and any other geospatial geometries, including walkable, drivable, or bikeable urban networks. A network is a collection of connected objects. The objects in a network are called nodes (or vertices) and are visualised as points. The connections between nodes are called edges and are drawn as lines.  OSMnx networks are topologically corrected, directed, and preserve one-way directionality.
-
-Walkable urban networks represent all the streets and paths that pedestrians can use (ignoring one-way directionality). We created a graph of the walkable urban network 5000 meters from a point arbitrarily defined as the centre of Cambridge (Figure on the left).
-
-OSMnx can determine the node within a network that is closest to a given set of coordinates. Using this functionality, we added the location of all the GP practices in central Cambridge to the OSMnx Cambridge walkable urban network. While useful, this can be inaccurate. To read more about the possible issues that can arise from, and the solutions to, the inaccuracy of mapping coordinates to an OSMnx network node see [here](https://nathanrooy.github.io/posts/2021-03-12/osmnx-openstreetmap-taxicab-routing/). The GP practice nodes were specified as points of interest - where the time of travel starts. 
-
-We specified the walking speed in our analysis to be 4.5 km/hr. By dividing the length of the edge (distance between two nodes) by the walking speed we calculated the time it would take to walk the distance of the edge, adding this as a new attribute 'time' to each edge in the network. This allowed us to determine which nodes in the Cambridge walkable urban network were 5-, 10-, and 20-minutes walking distance from the GP practice nodes. Nodes 5 minutes walking distance from a GP practice were coloured in dark red, while those 10 minutes and 20 minutes away were coloured in orange and yellow respectively (Figure on the right).
-
-<p align="left">
-  <img src="images/png/cambridge_osmnx_nodes.png" width="460" height="460">
-  &nbsp; &nbsp;
-  <img src="images/png/cambridge_node_coloured.png" width="460" height="460">
-</p>
-
-[GeoPandas](https://geopandas.org/en/stable/) combines the capabilities of pandas and shapely, providing geospatial operations in pandas and a high-level interface to multiple geometries to shapely, facilitating geospatial data manipulation in python. Using the [NetworkX](https://networkx.org/documentation/stable/index.html) and GeoPandas libraries one can create isochrone polygons from the isochrone network graph, allowing isochrones to be better visualised (Figure on the left). Put simply, nodes for each of the travel times are extracted as point clouds and polygon convex hulls are generated. However, a limitation of this approach is that by generating polygon convex hull geometries detail is lost, and inaccessible areas within isochrones are ignored. Alternative approaches and detailed methods on how to generate isochrones from network graphs are explored [here](http://kuanbutts.com/2017/12/16/osmnx-isochrones/).
-
-OSMnx does not have a native function to plot isochrones with Folium base maps. However, you can create a Geodataframe from isochrones polygons with Geopandas and export the isochrones as geoJSON files. Using this approach, we generated three isochrone GeoJSON files representing the areas 5 minutes, 10 minutes, and 20 minutes walking distance from any of the central Cambridge GP practices and added them to an interactive Folium map (Figure on the right). 
-
-<p align="left">
-  <img src="images/png/cambridge_isochromes_coloured.png" width="460" height="460">
-  &nbsp; &nbsp;
-  <iframe width= "455" height="455"  src="images/folium/cambridge_map_travel.html" style="border:none;"></iframe>
-</p>
-
-### Driving time between a GP Practice and a Hospital in central London
-
-The code for this section of the project can be found [here](https://github.com/nhsx/nhs_time_of_travel/blob/main/driving_hospital_london.ipynb)
-
-A major challenge when estimating accurate travel times is accounting for the multitude of factors that impact vehicle speed during a journey. Free-flow speed is defined as the average speed of vehicles on a given segment, measured under low-volume conditions – usually close to the speed limit of a given street. However, in major cities such as London free-flow speed is rarely, if ever, achieved by a vehicle during a trip, especially during rush hour. OpenStreetMap does not contain any traffic information, and therefore while travel time information can be calculated using OSMnx it assumes free-flow conditions. As a result, travel times for most trips would be underestimated.
-
-In this section of the project, we explored combining [Uber Movement](https://movement.uber.com/) data with OSMnx to determine a better estimate of the fastest route between a GP Practice and a Hospital in central London. Uber movement consists of billions of pieces of Uber trip data, including datasets measuring zone-to-zone travel times and information on street speeds across a city for Ubers. The data is publicly accessible and can be downloaded in CSV format. 
-
-For our analyses, we used the Uber Movement travel speed data. The data can either be downloaded as a summary of an entire quarter, with speeds on a given road segment provided by the hour of the day, aggregated from all days in the specified quarter, or a monthly dataset can be used which provides the average speed on a given road segment for each hour of each day in the specified month. In our analysis, we used the most recent quarterly speed statistic dataset (Q1 2020). The Uber Movement data does not cover all source and destination pairs for each time interval and includes only road segments with at least 5 unique trips in a quarter resulting in data gaps. Currently, Uber Movement data is available only for selected cities. In the UK, zone-to-zone travel time data is available for London, Leeds, Birmingham, and Bristol while travel speed data is only available for London. 
-
-We decided to conduct exploratory analyses on the route and trip time between St. John’s Wood Medical Practice and St. Thomas Hospital, as any route between them would need to cross central London which is severely impacted by traffic. We generated an OSMnx drivable urban network for the section of central London where the hospital and GP practice are located (Figure on the left). As in the previous section, using their coordinates the GP practice and hospital were mapped to their nearest node within the driveable network.
-
-The OSMnx library contains a built-in shortest-path function which allows you to find the shortest path between any two nodes in a network. You can weight the shortest-path function using different edge attributes. Uber Movement speed data is indexed by OpenStreetMap way ID and OSMnx retains the OpenStreetMap way ID for each edge in the network as an attribute. This allows for the Uber Movement speed data to be appended to each edge as a new attribute. If no Uber Movement speeds were available for a given edge in the network, free-flow speed was appended (which assumes that the speed along an edge is the speed limit of the street). As we were interested in exploring the impact of traffic data on the predicted shortest route between two locations, the Uber Movement speeds at 6 pm (peak London rush hour) were used. This cut of the Uber Movement dataset can be downloaded from this webpage in CSV format. 
-
-The travel time for each edge can be calculated and appended as a new edge attribute by dividing the length of the edge by the speed. Travel time was used to weight the shortest path function, translating to the predicted fastest route between St. John’s Wood Medical Practice and St. Thomas Hospital. The shortest path using both free-flow travel time and Uber-weighted travel was calculated, with both routes visualised on a interactive Folium map (Figure on the right). The OSMnx driveable urban network for this region of central London is also added as layer on the map. 
-
-<p align="left">
-  <img src="images/png/london_osmnx_nodes.png" width="460" height="460">
-  &nbsp; &nbsp;
-  <iframe width= "455" height="455"  src="images/folium/route_map.html" style="border:none;"></iframe>
-</p>
-
-The statistics for the free-flow and Uber-weighted fastest routes between St. John’s Wood Medical Practice and St. Thomas Hospital are summarized in a table (Table below). At 6 pm the Uber-weighted route differs significantly from the free-flow route, highlighting the impact of traffic on the fastest route between two locations in central London. The free-flow route is slightly longer than the Uber-weighted route. While longer, assuming free-flow speeds this route is quicker than the Uber-weighted route as it involves driving through Park Lane (on the edge of Hyde park) which in 2020 had a speed limit of 40 mph (almost all other streets in central London have a speed limit of 20 mph).  As a result of the gaps in the Uber Movement dataset, only 51% of the edges in the Uber-weighted route had corresponding Uber Movement datapoints. Therefore, the estimated travel time for this route (~ 13 min 40 seconds) is still likely a significant underestimation of the actual travel time at 6 pm. 
-
-<p align="left">
-  <iframe width= "960" src="images/folium/plotly_table.html" style="border:none;"></iframe>
-</p>
-
-Estimating accurate travel times using open-source tools and data is challenging due to the lack of available travel time and speed data. Examples of paid-for alternatives include the [Google Maps API](https://developers.google.com/maps) and [Otonomo](https://otonomo.io/traffic-data/). 
-
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="data/uber_movement_speeds_6pm.csv">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Download the Uber Movement dataset (.csv)</span>
-  </a>
-</div>
+The work that follows can be seen and downloaded from this repository [GitHub repository](https://github.com/nhs-pycom/nhs_time_of_travel). This is the current piece of work to which the 
+following page refers to. Please raise any issues with the code using the issues part of the github repository or contact me directly, paul.carroll9@nhs.net. 
 
 
-### Search Functionality as a Layer for Isochrone Maps
+### Use-cases 
 
-The code for this section of the project can be found [here](https://github.com/nhsx/nhs_time_of_travel/blob/main/a%26e.ipynb)
+Following a presentation at NHS-Pycom on the aforementioned Geospatial work, and several conversations post the presentation, they identified where there are current gaps and needs, 
+or use-cases for which a geospatial tool, built specifically for purpose, could help solve the issues they faced. The use-cases they faced were numerous:
 
-When trying to compare available services and prospective travel times, it is sometimes not easy to find certain health services from the publicly available datasets. This part of the project takes an example of 24 hour A & E services in one of the largest counties in England. It purely focuses on driving times, so excludes the air ambulance. The manual search I used in this part of the project was to ascertain where the locations for the next level of care in the county may be. In this case, Urgent Care Centres, layered on 24 hour A & E services.
+- Ambulance drop-offs/ Patient transport
+- District Nurse visits
+- blood deliveries
+- Managing a multi-site portfolio and the transport units within
+- Modes and means of transport for NHS staff to their place or places of work, and the environmental impact of their travel
+- Carbon reduction and the evidence base for sustainability in order to support external conversations 
+- Where to site a new Covid site for maximum population and minimum overlap with other sites
+- Where to site a Diabetes or blood test van in order to cut missed appointments for patients by making it easier for them to access services.
 
-Using a googleCP api key, the user can search for anything in google maps, and the code in this notebook extracts the name and latitude and longitude from this search. The example shown uses a publicly available dataset, found  [here](https://www.nhs.uk/about-us/nhs-website-datasets/hospital.csv), but the first search could be done using the search functionality, and this repeated to put a second layer of data in the mapping functionality. 
 
-Once again, this project uses OSMnx in a similar way to the Cambridge GP project. But here the transport mode selected is 'drive', giving driving times at the selected speed across the network selected, in this case Lincolnshire. I specified the driving speed to be 60 km/hr, and selected 10, 20 and 30 minute driving distances. 
+### Time & Data. Solve these two problems.
 
-The two interactive folium maps below show the 24 hour A & E locations, and in the second map, the Urgent Care Centres on top of the 24 hour A & E services. 
+The more we spoke to different areas of the NHS the more this need became apparent. What also became apparent was the cost of some of these services. Numerous trusts are paying commercial 
+operators for these services. Sometimes these were the only operators out there, as there was nothing publicly available or free. Can we make the way these services are executed more efficient, can we help staff hit targets, and in doing so boost staff retention, can we help trusts fit in more appointments, or at least carry out their appointment list more efficiently and spend less time travelling and more time with patients. 
+But for other services the second need was the need for patient/ staff data to remain confidential, and remain within the trust. Within the NHS data protection is paramount, so taking 
+this account, we wanted to build a tool that could be brought to the data. Using open-source software and publicly accessible datasets we wanted to show what is possible and ideally provide this repo as a source for different areas of the NHS to adapt to their own specific needs. There are two publicly available datasets we have used, and these are from NHS Digital. The main software we used is Python 3.10+. The app functionality is Streamlit, with several Geospatial libraries within Python.
+This app can be spun up on anyone's laptop, and the data would never need to leave that machine. 
 
-<p align="left">
-  <iframe width= "455" height="455"  src="images/folium/lincolnshire_a&e.html" style="border:none;"></iframe>
-  &nbsp; &nbsp;
-  <iframe width= "455" height="455"  src="images/folium/lincolnshire_services.html" style="border:none;"></iframe>
-</p>
+Data sources: [NHS Digital](https://digital.nhs.uk/services/organisation-data-service/file-downloads/gp-and-gp-practice-related-data).
 
-Adding the isochromes to the services and county map shows the following distributions; nodes and isochromes maps:
 
-<p align="left">
-  <img src="images/png/lincolnshire_nodes_coloured.png" width="460" height="460">
-  &nbsp; &nbsp;
-  <img src="images/png/lincolnshire_isochromes.png" width="460" height="460">
-</p>
+### What our tool does -  Streamlit & Functions
 
-The final interactive folium map shows the results of the workbook. Four 24 hour A & E services overlayed on the 12 Urgent Care Centres, onto the Folium map of Lincolnshire.  
+Streamlit is an app wrapper, extremely useful and malleable. Especially so when it comes to geospatial work. I carried out some research on Geospatial tools and the best way to approach 
+multiple functionalities, and the shining example of this is this page https://github.com/opengeos/streamlit-geospatial. Professor [Qiusheng Wu] https://github.com/giswqs and his 
+geospatial page showed us what was possible, and gave us a great example of how to go after certain geospatial tasks, and write the code for how to have these differing geospatial 
+functions run together in one app and one place. 
+
+
+## Three Pages
+
+### Route Optimisation - aka The Travelling Salesman Problem
+
+To tackle the use-cases of Ambulance drop-offs/ Patient transport, District Nurse visits, or blood deliveries, it became clear the issue here to solve was one of route optimisation. 
+I researched how to go about this online, read several medium articles and also read through several github repositories. In computer science this problem is a NP hard problem, and there 
+were no easy solutions out there. There were also quite a few commercial operators in this space, and rightly so, for 10 different addresses, 10 permutations with P(10, 10) gives 3.6 
+million approximate outcomes, with 12 addresses this goes up significantly to 479 million. Trying to solve this problem in way that would be computationally relevant for the likely 
+laptop power in a NHS trust was a real need here. But also there was a sweetspot. How many patients was a district nurse likely to visit in a day. How many patient drop-offs would there 
+be before an ambulance would need to return to hospital, especially in this post covid world. Both of these answers we'd imagine would be less than 12. 
+I took the approach of trying to solve the permutations question first, and plotting that route on to a folium map, and measuring it. Using the OSMNX package, in combination with 
+[NetworkX](https://networkx.org/documentation/stable/index.html)
+and Folium, we were able to achieve this. 
+
+OSMnx is a Python package that lets you download geospatial data from [OpenStreetMap](https://www.openstreetmap.org/) and model, project, visualise and analyse real-world street networks 
+and any other geospatial geometries, including walkable, drivable, or bikeable urban networks. A network is a collection of connected objects. The objects in a network are called 
+nodes (or vertices) and are visualised as points. The connections between nodes are called edges and are drawn as lines.  OSMnx networks are topologically corrected, directed, 
+and preserve one-way directionality. 
+
+Layering the OSMNX and NetworkX nodes and edges onto a Folium map, and using the ox.distance.nearest_nodes and nx.shortest_path functions, we were able to produce a calculation of the 
+shortest route around the network. The algorithm we've written does this first for a permutations function, and then for a tsp_greedy function.  
+From testing, having the initial permutations distance calculation compare with the tsp_greedy calculation, returned a far more superior output to the route displayed on the folium map. 
+
+The functions are wrapped in the streamlit code, and when the code to run the app is called 'streamlit run streamlit_app.py', this is the page that you'll see when you click on the Route
+Optimizer. On the left of the page you have the index, with 'Route Optimizer' highlighted here. The 'hospital.csv' dataset from the data folder is pre-loaded. When you select a town/ City or County from the box, the dataframe will filter to show you all hospitals in the dataset within that area. If you wish to enter a different start address, for example your starting 
+address, or a train station, please enter that in the box titled 'Enter a new start address'. When you click on submit, this address will appear in the 'Select start address' field. 
+The 'select start address' field is a dropdown box of the filtered dataframe above. 
+On the left of the screen just beneath the page index, is a browse files button. This is where you can upload your own data. There is an address_templates.xls file in the templates folder. 
+Please use the format in this, 'Name, Address' so the code will pick up your data and geocode it correctly.
 
 <p align="centre">
-  <iframe width= "455" height="455"  src="images/folium/lincolnshire_services_traveltimes.html" style="border:none;"></iframe>
+  <img src="images/png/tsp1.png" width="1300" height="660">
   &nbsp; &nbsp;
 </p>
 
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="data/hospital.csv">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Download the NHS Hospital dataset (.csv)</span>
-  </a>
-</div>
-
-### London Transport network maps and GP Surgeries
-
-The code for this section of the project can be found [here](https://github.com/nhsx/nhs_time_of_travel/blob/main/tube_gp.ipynb)
-
-This part of the project remains unfinished. The idea here was be able to plot a travel time from a London Transport transit point (Underground, Overground or DLR) to a London GP practice. This involved several datasets; London Transport transit nodes and edges, A GP practice dataset for London, and a dataset I found online, which listed the travel times from station to station for the London Underground network, available [here](https://www.whatdotheyknow.com/request/station_to_station_journey_times). 
-
-This involved using networkx, and the nodes and edges functionality therein, alongside latitude and longitude data to correctly plot the London Underground, Overground and DLR maps. Added to this dataset were the travel times between stations. 
-
-OSMnx was used slightly differently here than before. There is a custom travel mode with which you can ask OMSnx to search routes such as 'railway', or 'rail/tram'. This is very useful when looking into urban areas where mass transit may be more popular than both walking or driving. 
-
-<p align="left">
-  <img src="images/png/london_transit.png" width="460" height="460">
-  &nbsp; &nbsp;
-  <img src="images/png/omsnx_london_rail.png" width="460" height="460">
-</p>
-
-Folium was used to identify GP practices in London, the same functionality as used in the Cambridge GP and Lincolnshire A&E services parts of this project. Given the location is London, the output is hugely more clustered representing patient demand in the Capital.
+In this example I've selected Leicester, and from the selected addresses, have picked the Nuffield Hospital on Scraptoft Lane. 
+Once you hit the submit button the algorithm goes to work, and maybe 20-30 seconds later (could be longer the first time you run this, and if on a larger area for example North Yorkshire or London, both nodes and edge heavy), then you should see the output similar to the following format. The folium map is rendered, and the route plotted. If you hover over a marker, you can see what number that marker is, in this number 1 I've highlighted. The dataframe below the map will show the from and to addresses in the suggested optimised order. If you scroll to the right in the dataframe, distance in miles between each address is there, Total distance, walking time, peak driving time, off peak driving time, and cycling time. These are hard coded and can be edited to your requirements within the code. 
 
 <p align="centre">
-  <iframe width= "455" height="455"  src="images/folium/london_gp.html" style="border:none;"></iframe>
+  <img src="images/png/tsp2.png" width="1300" height="660">
   &nbsp; &nbsp;
 </p>
 
-The last part of the workbook focuses on the path functionality, in particular the shortest path between stations. Currently the user is able to enter two stations, A & B, within the network, and the function will retrieve the route, the path length, the number of stops, and will give advice on the the lines needed to get from A to B. In the two examples shown, St Johns Wood to Cockfosters is one, and the second, Warren Street to Victoria. This function uses the networkx shortest_path functionality.
+Please note with the way this algorithm works. This will work well with up to 10, maybe even 12 addresses. But that will depend on the computational power you have available, and it will be slower the higher the number of addresses. Streamlit is set up in our code to cache the Api calls that return a networkx map of a region. So the first you run this on Cornwall, it may
+take a while. But the second time and onward, the code will look at the cache first, and call the same json file that was produced for the area if it's there and hasn't been deleted. 
+Your data is not cached, only the Nominatim api region calls. 
 
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="data/gp_pop_london_mapped_final.csv">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Download the London GP practice dataset (.csv)</span>
-  </a>
-</div>
+
+### Multiple Shortest Route
+
+This is a functionality that was brought by a couple of areas in the NHS. One use case here is suggesting different modes of transport for the shortest route to work for staff, and a future use case could incorporate bus routes, and bus timetables, or public transport routes and timetables. Whilst this function works in a different way from the route optimiser, the premis is the same. The user can again either upload or use the existing datasets in the data folder. Enter a target address, select the network type, press submit and the algorithm will run. 
+We envisage this page working when the user inputs their own data, for example addresses for staff, or patients, and runs the algorithm. The algorithm will produce routes to and from each address to the selected target point. 
+In the example shown below, I've put the target address as Leicester Railway Station, London Road, Leicester. Again the default here is the hospital.csv dataset, so the hospitals in Leicester are pre-loaded. The functionality visible here is tri-fold. Firstly the map shows you the target, and the markers for each hospital location. If you click on the markers, the details of that marker come up, Leicester Railway Station is shown in this example. Secondly the top right is a route filter, and you can turn the different routes on and off for visibility, shown in the second pic below. 
+Thirdly, the dataframe beneath the map show the different routes, distances, and walking, and peak and off-peak driving times in minutes. Here this could be adapted to show bus routes or cycle times. 
+
+<p align="centre">
+  <img src="images/png/msr.png" width="1300" height="660">
+  &nbsp; &nbsp;
+</p>
+
+
+<p align="centre">
+  <img src="images/png/route_filter.png" width="1300" height="660">
+  &nbsp; &nbsp;
+</p>
+
+
+### Max Coverage Location 
+
+This is the site scoring page. We have tried to take the approach here of providing a concept piece for how this page could work. Retailers use commercial software when it comes to identifying a new location, and take into account local population within a certain distance or time to travel, competitors, substitutes, and a variety of other factors. For our version, we have used time to travel, and population covered from LSOAs. In future, we could add in other hospitals, or gp practices, should the user the require this. 
+For now, the user can enter an address, enter the radius in miles around that address, and select the hard coded travel speed. This is weighted per population from the centre of each LSOA. 
+Upon hitting submit the user will see a folium map, with a red circumference, and blue highlighted LSOAs, which when you hover over them will display the population of that LSOA. Calculations underneath the map show the average weighted travel time for the population covered, and the total population covered. 
+
+<p align="centre">
+  <img src="images/png/mclp.png" width="1300" height="880">
+  &nbsp; &nbsp;
+</p>
+
+The two variables that are used here, population, and weighted average time to travel for the selected speed, are shown beneath the map. In this case, 33 minutes, with walking at 3mph selected (this is hard-coded but the speed can be changed), and population covered 118,017.
 
 ## Citations
 
 Boeing, G. 2017. [OSMnx: New Methods for Acquiring, Constructing, Analyzing, and Visualizing Complex Street Networks.](https://geoffboeing.com/publications/osmnx-complex-street-networks/)<i>Computers, Environment and Urban Systems</i> 65, 126-139. doi:10.1016/j.compenvurbsys.2017.05.004
 
+Professor [Qiusheng Wu] https://github.com/giswqs; 
+https://github.com/opengeos/streamlit-geospatial. 
+
 ## About this page
 
-This page is built using end-to-end open source analytical tools including: [The NHS Digital Service Manual](https://service-manual.nhs.uk/), [python](https://nhs-pycom.net/), [OSMnx](https://osmnx.readthedocs.io/en/stable/), [plotly](https://plotly.com/python/), [folium](http://python-visualization.github.io/folium/), [GeoPy](https://geopy.readthedocs.io/en/stable/), [beautiful soup](https://www.crummy.com/software/BeautifulSoup/), [pandas](https://pandas.pydata.org/docs/), [GeoPandas](https://geopandas.org/en/stable/), [NetworkX](https://networkx.org/documentation/stable/index.html), [geojson](https://python-geojson.readthedocs.io/en/latest/), [github.io](https://pages.github.com/), and [github actions](https://github.com/features/actions).
+This page is built using end-to-end open source analytical tools including: [The NHS Digital Service Manual](https://service-manual.nhs.uk/), [python](https://nhs-pycom.net/), [OSMnx](https://osmnx.readthedocs.io/en/stable/), [plotly](https://plotly.com/python/), [folium](http://python-visualization.github.io/folium/), [GeoPy](https://geopy.readthedocs.io/en/stable/), [pandas](https://pandas.pydata.org/docs/), [GeoPandas](https://geopandas.org/en/stable/), [NetworkX](https://networkx.org/documentation/stable/index.html), [geojson](https://python-geojson.readthedocs.io/en/latest/), [github.io](https://pages.github.com/), and [github actions](https://github.com/features/actions).
 
-<div class="nhsuk-action-link">
-  <a class="nhsuk-action-link__link" href="https://github.com/nhsx/open-analytics-template">
-    <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M0 0h24v24H0z" fill="none"></path>
-      <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
-    </svg>
-    <span class="nhsuk-action-link__text">Find out how to build your own open analytics pipeline</span>
-  </a>
-</div>
 
-If you have any suggestions or questions, email: <a href="mailto:mattia.ficarelli@nhsx.nhs.uk">mattia.ficarelli@nhsx.nhs.uk</a> or <a href="mailto:paul.carroll@nhsx.nhs.uk">paul.carroll@nhsx.nhs.uk</a>
-
-<hr class="nhsuk-u-margin-top-0 nhsuk-u-margin-bottom-6">
