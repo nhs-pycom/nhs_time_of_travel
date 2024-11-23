@@ -2,6 +2,11 @@
 
 [![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 
+Please note, before you do any work or try and use any part of this package, you will need to set up a Geospatial environment with the recommended installations in the pipenv in this repo. 
+You are likely to encounter errors and conflicts with library versions, unless you run the installation instructions. 
+To use the workbooks, select the Streamlit python environment within your IDE, that is generated from the pipenv. 
+Geospatial packages are notoriously difficult to run, updated versions may conflict with other installations, generating errors and preventing you from being able to use this repo.
+
 This is a prototype, and a concept piece of work. For a comprehensive read-through and some slides of the pages, please read the index.md file.
 
 This work was led by [Paul Carroll](https://github.com/pauliecarroll), Senior Data Scientist, with a team comprising of [Oliver Jones](https://github.com/oliverjonesnhsx), [Muhammed-Faaiz Shawanas](https://github.com/faaiz-25), [Mary Amanuel](https://github.com/maryamanuel1), from NHS England, [Max Morisov](https://github.com/maxim-morosov) & [Nick Fortescue](https://github.com/nickfortescuegoogle), engineers at GoogleHealth.
